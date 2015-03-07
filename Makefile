@@ -1,9 +1,9 @@
-INSTALLDIR=/usr/local/bin
+INSTALLDIR=/usr/local/bin/
 
 sxpy: sxpy.rkt
-	raco exe sxpy
+	raco exe sxpy.rkt
 
-install:
+install: sxpy
 	sudo cp sxpy $(INSTALLDIR)
 
 clean:
