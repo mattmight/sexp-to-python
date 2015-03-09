@@ -285,6 +285,9 @@
 
     ; (NameConstant <name-constant>)
     [`(NameConstant True)  "True"]
+    [`(NameConstant False) "False"]
+    [`(NameConstant None)  "None"]
+    
     
     ; (Ellipsis)
     ['(Ellipsis)     "..."]
