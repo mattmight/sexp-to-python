@@ -684,18 +684,25 @@
     [`(Nonlocal . ,ids)
      (string-append "nonlocal " (string-join (map symbol->string ids) ", "))]
     
-    ;(Expr <expr>)
+    ; (Expr <expr>)
     [`(Expr, expr)
      (expr->string expr)]
     
-    ;(Pass) 
+    ; (Pass) 
     ['(Pass)      "pass"]
 
-    ;(Break)
+    ; (Break)
     ['(Break)     "break"]
     
-    ;(Continue)
+    ; (Continue)
     ['(Continue)  "continue"]
+    
+    
+    ;; Synthetic statements:
+    
+    ; (Local <identifier>+)
+    [`(Local . ,ids)
+     (string-append "; local " (string-join (map symbol->string ids) ", "))]
     
     ))
     
