@@ -449,8 +449,7 @@
 
 ;; Exception handlers:
 (define (handler->string handler)
-  (write handler)
-  (newline)
+
   (match handler
     [`(except #f #f . ,body)
      (string-append 
