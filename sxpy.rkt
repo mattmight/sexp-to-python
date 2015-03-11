@@ -413,11 +413,11 @@
     [`(Arguments
        (args . ,args)
        (arg-types . ,arg-types)
-       (vararg ,vararg . ,vararg-type) ; TODO/BUG: Handle possible type
+       (vararg ,vararg . ,vararg-type) 
        (kwonlyargs . ,kwonlyargs)
        (kwonlyarg-types . ,kwonlyarg-types)
        (kw_defaults . ,kw_defaults)
-       (kwarg ,kwarg . ,kwarg-type) ; TODO/BUG: Handle possible type
+       (kwarg ,kwarg . ,kwarg-type)
        (defaults . ,defaults))
      ; =>
      (define printed-args '())
