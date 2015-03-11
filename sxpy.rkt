@@ -413,11 +413,11 @@
     [`(Arguments
        (args . ,args)
        (arg-types . ,arg-types)
-       (vararg ,vararg) ; TODO/BUG: Handle possible type
+       (vararg ,vararg . ,vararg-type) ; TODO/BUG: Handle possible type
        (kwonlyargs . ,kwonlyargs)
        (kwonlyarg-types . ,kwonlyarg-types)
        (kw_defaults . ,kw_defaults)
-       (kwarg . ,kwarg) ; TODO/BUG: Handle possible type
+       (kwarg ,kwarg . ,kwarg-type) ; TODO/BUG: Handle possible type
        (defaults . ,defaults))
      ; =>
      (define printed-args '())
@@ -450,15 +450,27 @@
        (add-arg! "*"))
      
      (when vararg
-       (add-arg! (string-append "*" (symbol->string vararg))))
+       (add-arg! (string-append "*" (symbol->string vararg)
+                                (if (not (null? vararg-type))
+                                    (string-append " : " (expr->string (car vararg-type)))
+                                    ""))))
      
      (set! printed-args 
            (append printed-args (map render-arg
                                      kwonlyargs
                                      kwonlyarg-types
                                      kw_defaults)))
+     
+     (when kwarg
+       (add-arg! (string-append "**" (symbol->string kwarg)
+                                (if (not (null? kwarg-type))
+                                    (string-append " : " (expr->string (car kwarg-type)))
+                                    ""))))
+       
                              
-     (string-join printed-args ",")]))
+     (string-join printed-args ",")]
+    
+    [else (error (format "can't handle Arguments: ~s" parameters))]))
        
 
 ;; Exception handlers:
