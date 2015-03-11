@@ -718,6 +718,9 @@
     [`(Local . ,ids)
      (string-append "; local " (string-join (map symbol->string ids) ", "))]
     
+    [`(Comment ,string)
+     (string-append "; " string)]
+    
     ))
     
     
