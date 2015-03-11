@@ -255,7 +255,11 @@
      ;=>
      (string-append
       (match func 
+        ; Proper handling here is necessary for decorators:
+        [`(Attribute ,expr ,name)  (expr->string func)]
         [`(Name ,name) (symbol->string name)]
+        
+        ; General case:
         [else (string-append "(" 
                              (expr->string func)
                              ")")])
@@ -368,10 +372,17 @@
 
 
 ;; Decorators
+(define (decorator->string decorator)
+  (string-append 
+   "@" (expr->string decorator)))
+
 (define (decorators->string decorators)
   (if (null? decorators) 
       ""
-      "TODO: decorators"))
+      (string-join (map decorator->string decorators)
+                   (indent-spaces)
+                   #:before-first (indent-spaces)
+                   #:after-last "\n")))
 
 
 ;; Comprehensions
