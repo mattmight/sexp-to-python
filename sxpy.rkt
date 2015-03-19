@@ -29,79 +29,80 @@
 ;; Operators
 (define (op->string op)
     (match op
-    ['And    " and "]
-    ['Or     " or "]
+      ['And    " and "]
+      ['Or     " or "]
+      
+      
+      ['Invert  "~"]
+      ['Not     "!"]
+      ['UAdd    "+"]
+      ['USub    "-"]
+      
+      ; Add 
+      ['Add    " + "]
+      
+      ; Sub 
+      ['Sub    " - "]
+      
+      ; Mult 
+      ['Mult   " * "]
+      
+      ; Div 
+      ['Div    " / "]
+      
+      ; Mod 
+      ['Mod    " % "]
+      
+      ; Pow 
+      ['Pow    " ** "]
+      
+      ; LShift 
+      ['LShift  " << "]
+      
+      ; RShift 
+      ['RShift  " >> "]
+      
+      ; BitOr 
+      ['BitOr   " | "]
+      
+      ; BitXor 
+      ['BitXor  " ^ "]
+      
+      ; BitAnd 
+      ['BitAnd   " & "]
+      
+      ; FloorDiv
+      ['FloorDiv " // "]
+      
+      ; Eq 
+      ['Eq " == "]
+      
+      ; NotEq 
+      ['NotEq " != "]
+      
+      ; Lt 
+      ['Lt " < "]
+      
+      ; LtE 
+      ['LtE " <= "]
     
-    ['Invert  "~"]
-    ['Not     "!"]
-    ['UAdd    "+"]
-    ['USub    "-"]
-
-    ; Add 
-    ['Add    " + "]
-
-    ; Sub 
-    ['Sub    " - "]
-
-    ; Mult 
-    ['Mult   " * "]
-
-    ; Div 
-    ['Div    " / "]
-
-    ; Mod 
-    ['Mod    " % "]
-    
-    ; Pow 
-    ['Pow    " ** "]
-
-    ; LShift 
-    ['LShift  " << "]
-                     
-    ; RShift 
-    ['RShift  " >> "]
-
-    ; BitOr 
-    ['BitOr   " | "]
-
-    ; BitXor 
-    ['BitXor  " ^ "]
-
-    ; BitAnd 
-    ['BitAnd   " & "]
-    
-    ; FloorDiv
-    ['FloorDiv " // "]
-    
-    ; Eq 
-    ['Eq " == "]
-    
-    ; NotEq 
-    ['NotEq " != "]
-    
-    ; Lt 
-    ['Lt " < "]
-    
-    ; LtE 
-    ['LtE " <= "]
-    
-    ; Gt 
-    ['Gt " > "]
-     
-    ; GtE
-    ['GtE " >= "]
-    
-    ; Is 
-    ['Is " is " ]
-    
-    ; IsNot 
-    ['IsNot " is not "]
-    
-    ; In 
-    ['In " in "]
-    
-    ; NotIn
-    ['NotIn " not in "]))
+      ; Gt 
+      ['Gt " > "]
+      
+      ; GtE
+      ['GtE " >= "]
+      
+      ; Is 
+      ['Is " is " ]
+      
+      ; IsNot 
+      ['IsNot " is not "]
+      
+      ; In 
+      ['In " in "]
+      
+      ; NotIn
+      ['NotIn " not in "]))
 
 
 (define (augop->string op)
@@ -172,7 +173,7 @@
                     ": (" (expr->string expr) ")")]
 
     ; (IfExp <expr> <expr> <expr>)
-    [`(If ,cond ,ontrue ,onfalse)
+    [`(IfExp ,cond ,ontrue ,onfalse)
      (string-append "(" 
                     (expr->string ontrue)
                     ") if ("
@@ -561,10 +562,7 @@
      (string-append 
       (decorators->string decorator_list)
       "class " (symbol->string name) "(" (arguments->string bases keywords starargs kwargs) "):\n"
-      (indent-spaces) 
       (with-indent (stmts->string body)))]
-    
-    
     
     ; (Return <expr?>)
     [`(Return)          "return"]
