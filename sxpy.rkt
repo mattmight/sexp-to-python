@@ -726,10 +726,10 @@
     
     ; (Local <identifier>+)
     [`(Local . ,ids)
-     (string-append "; local " (string-join (map symbol->string ids) ", "))]
+     (string-append "# local " (string-join (map symbol->string ids) ", "))]
     
     [`(Comment ,string)
-     (string-append "; " string)]
+     (string-append "# " string)]
     
     ))
     
