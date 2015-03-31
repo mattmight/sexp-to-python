@@ -360,12 +360,12 @@
             (map keyword->string keywords)))
   
   (when starargs
-    (set! starargs 
+    (set! printed-args
           (append printed-args 
                   (list (string-append "*" "(" (expr->string starargs) ")")))))
   
   (when kwargs
-    (set! kwargs 
+    (set! printed-args
           (append printed-args 
                   (list (string-append "**" "(" (expr->string kwargs) ")")))))
     
