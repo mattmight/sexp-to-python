@@ -323,9 +323,11 @@
         
     ; (Tuple <expr>*)
     [`(Tuple . ,exprs)
-     (string-append "(" (string-join (map expr->string exprs) ",") "," ")")]))
-    
-
+     (let ([expr-len (length exprs)])
+      (cond
+       [(= expr-len 0) "()"]
+       [(= expr-len 1) (string-append "(" (expr->string (car exprs)) ",)")]
+       [else (string-append "(" (string-join (map expr->string exprs) ",") "," ")")]))]))
 
 
 ;; Slices
