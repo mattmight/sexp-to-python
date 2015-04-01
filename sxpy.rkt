@@ -699,8 +699,12 @@
     [`(ImportFrom (module ,id)
                   (names . ,aliases)
                   (level ,level))
-     (error "TODO/BUG: ImportFrom not yet handled.")]
-       
+     (string-append
+      "from "
+      (if level (make-string level #\.) "") 
+      (if id (symbol->string id) "")
+      " import "
+      (string-join (map alias->string aliases) ", "))]
     
     ; (Global <identifier>+)
     [`(Global . ,ids)
