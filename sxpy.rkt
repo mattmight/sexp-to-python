@@ -571,7 +571,7 @@
     [`(Return ,expr)    (string-append "return " (expr->string expr))]
     
     ; (Delete <expr>*)
-    [`(Delete . ,exprs) (string-append "delete " (string-join (map expr->string exprs) ", "))]
+    [`(Delete . ,exprs) (string-append "del " (string-join (map expr->string exprs) ", "))]
     
     ; (Assign (targets <expr>*) (value <expr>))
     [`(Assign (targets . ,targets) (value ,value))
