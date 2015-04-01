@@ -144,7 +144,25 @@
     ; FloorDiv
     ['FloorDiv " //= "]))
 
-
+(define (number->py num)
+ (cond
+  [(exact-integer? num) (number->string num)]
+  [(and (real? num) (infinite? num)) 
+    (if (> num 0) "(float(\"+inf\"))"
+                  "(float(\"-inf\"))")]
+  [(and (real? num) (nan? num)) "(float(\"nan\"))"]
+  [(and (inexact? num) (real? num))
+   (number->string num)]
+  [(and (exact? num) (rational? num))
+   (string-append "(" (number->string num) ")")]
+  ; I don't know what these numbers would be 
+  [(exact? num) (error (format "Unknown Number: ~v" num))]
+  [else ; complex
+   (string-append "("
+    (if (not (zero? (real-part num))) 
+        (string-append (number->py (real-part num)) "+") 
+        "")
+    (number->py (imag-part num)) "j)")]))
 
 ;; Expressions
 (define (expr->string expr)
@@ -270,8 +288,7 @@
       )]
 
     ; (Num <number>)
-    ; TODO/BUG: Handle complex numbers:
-    [`(Num ,num)           (number->string num)]
+    [`(Num ,num)           (number->py num)]
     
     ; (Str <string>)
     ; TODO/BUG: Handle this correctly:
@@ -279,12 +296,13 @@
      (format "~s" str)]
     
     ; (Bytes <byte-string>)
-    ; TODO/BUG: 0-pad hex values less than 16
     [`(Bytes ,bytes)
      (string-append 
       "b'"
       (apply string-append (map (λ (b)
-                                (string-append "\\x" (number->string b 16)))
+                                (string-append "\\x" 
+                                 (if (< b 16) "0" "")
+                                 (number->string b 16)))
                                 (bytes->list bytes)))
       "'")]
 
@@ -699,8 +717,12 @@
     [`(ImportFrom (module ,id)
                   (names . ,aliases)
                   (level ,level))
-     (error "TODO/BUG: ImportFrom not yet handled.")]
-       
+     (string-append
+      "from "
+      (if level (make-string level #\.) "") 
+      (if id (symbol->string id) "")
+      " import "
+      (string-join (map alias->string aliases) ", "))]
     
     ; (Global <identifier>+)
     [`(Global . ,ids)
