@@ -296,12 +296,13 @@
      (format "~s" str)]
     
     ; (Bytes <byte-string>)
-    ; TODO/BUG: 0-pad hex values less than 16
     [`(Bytes ,bytes)
      (string-append 
       "b'"
       (apply string-append (map (λ (b)
-                                (string-append "\\x" (number->string b 16)))
+                                (string-append "\\x" 
+                                 (if (< b 16) "0" "")
+                                 (number->string b 16)))
                                 (bytes->list bytes)))
       "'")]
 
