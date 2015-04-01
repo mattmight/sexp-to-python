@@ -144,7 +144,25 @@
     ; FloorDiv
     ['FloorDiv " //= "]))
 
-
+(define (number->py num)
+ (cond
+  [(exact-integer? num) (number->string num)]
+  [(and (real? num) (infinite? num)) 
+    (if (> num 0) "(float(\"+inf\"))"
+                  "(float(\"-inf\"))")]
+  [(and (real? num) (nan? num)) "(float(\"nan\"))"]
+  [(and (inexact? num) (real? num))
+   (number->string num)]
+  [(and (exact? num) (rational? num))
+   (string-append "(" (number->string num) ")")]
+  ; I don't know what these numbers would be 
+  [(exact? num) (error (format "Unknown Number: ~v" num))]
+  [else ; complex
+   (string-append "("
+    (if (not (zero? (real-part num))) 
+        (string-append (number->py (real-part num)) "+") 
+        "")
+    (number->py (imag-part num)) "j)")]))
 
 ;; Expressions
 (define (expr->string expr)
@@ -270,8 +288,7 @@
       )]
 
     ; (Num <number>)
-    ; TODO/BUG: Handle complex numbers:
-    [`(Num ,num)           (number->string num)]
+    [`(Num ,num)           (number->py num)]
     
     ; (Str <string>)
     ; TODO/BUG: Handle this correctly:
