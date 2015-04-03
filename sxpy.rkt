@@ -34,7 +34,7 @@
       
       
       ['Invert  "~"]
-      ['Not     "!"]
+      ['Not     "not "]
       ['UAdd    "+"]
       ['USub    "-"]
       
