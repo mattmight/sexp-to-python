@@ -23,7 +23,9 @@
 (define (module->string module)
   (match module
     [`(Module . ,stmts)
-     (stmts->string stmts)]))
+     (stmts->string stmts)]
+    
+    [else (error (format "no module match for ~s" module))]))
   
 
 ;; Operators
@@ -102,7 +104,9 @@
       ['In " in "]
       
       ; NotIn
-      ['NotIn " not in "]))
+      ['NotIn " not in "]
+      
+      [else (error (format "no operator for ~s" op))]))
 
 
 (define (augop->string op)
@@ -142,7 +146,10 @@
     ['BitAnd   " &= "]
     
     ; FloorDiv
-    ['FloorDiv " //= "]))
+    ['FloorDiv " //= "]
+    
+    [else (error (format "no aug. operator for ~s" op))]))
+    
 
 (define (number->py num)
  (cond
@@ -345,7 +352,11 @@
       (cond
        [(= expr-len 0) "()"]
        [(= expr-len 1) (string-append "(" (expr->string (car exprs)) ",)")]
-       [else (string-append "(" (string-join (map expr->string exprs) ",") "," ")")]))]))
+       [else (string-append "(" (string-join (map expr->string exprs) ",") "," ")")]))]
+    
+    [else (error (format "unknown expression: ~s" expr))]))
+
+
 
 
 ;; Slices
@@ -415,7 +426,9 @@
     [`(for ,target in ,iter if . ,conds)
      (string-append " for " (expr->string target)
                     " in " (expr->string iter)
-                    " if " (string-join (map expr->string conds) " if "))]))
+                    " if " (string-join (map expr->string conds) " if "))]
+    
+    [else (error (format "unknown comprehension: ~s" comp))]))
                     
 
     
@@ -538,7 +551,9 @@
      (string-append 
       (symbol->string module-name)
       " as "
-      (symbol->string name))]))
+      (symbol->string name))]
+    
+    [else (error (format "can't handle alias: ~s") alias)]))
 
 
 ;; Statements:
@@ -754,6 +769,8 @@
     
     [`(Comment ,string)
      (string-append "# " string)]
+    
+    [else (error (format "can't convert stmt to string: ~s" stmt))]
     
     ))
     
