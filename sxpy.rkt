@@ -223,20 +223,32 @@
       (string-append "{" (string-join (map expr->string exprs) ",") "}")]
 
     ; (ListComp <expr> <comprehension>*)
-    [`(ListComp ,expr ,comp)
-     (string-append "[" (expr->string expr) (comprehension->string comp) "]")]
+    [`(ListComp ,expr . ,comps)
+     (string-append
+      "[" (expr->string expr)
+      (apply string-append (map comprehension->string comps))
+      "]")]
     
     ; (SetComp <expr> <comprehension>*)
-    [`(SetComp ,expr ,comp)
-     (string-append "{" (expr->string expr) (comprehension->string comp) "}")]
+    [`(SetComp ,expr . ,comps)
+     (string-append
+      "{" (expr->string expr)
+      (apply string-append (map comprehension->string comps))
+      "}")]
     
     ; (DictComp <expr> <expr> <comprehension>*)
-    [`(DictComp ,key ,value ,comp)
-     (string-append "{" (expr->string key) " : " (expr->string value) (comprehension->string comp) "}")]
+    [`(DictComp ,key ,value . ,comps)
+     (string-append
+      "{" (expr->string key) " : " (expr->string value)
+      (apply string-append (map comprehension->string comps))
+      "}")]
     
     ; (GeneratorExp <expr> <comprehension>*)
-    [`(GeneratorExp ,expr ,comp)
-     (string-append "(" (expr->string expr) (comprehension->string comp) ")")]
+    [`(GeneratorExp ,expr . ,comps)
+     (string-append
+      "(" (expr->string expr)
+      (apply string-append (map comprehension->string comps))
+      ")")]
     
 
     ; (Yield)  | (Yield <expr>)
