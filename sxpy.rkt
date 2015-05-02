@@ -413,8 +413,8 @@
       ""
       (string-join (map decorator->string decorators)
                    (indent-spaces)
-                   #:before-first (indent-spaces)
-                   #:after-last "\n")))
+                   ; #:before-first (indent-spaces)
+                   #:after-last (string-append "\n" (indent-spaces)))))
 
 
 ;; Comprehensions
