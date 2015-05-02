@@ -474,18 +474,25 @@
      (define render-arg
        (λ (a t d) 
          
-         (define p 
-           (if d (format "~a = ~a"
-                         (symbol->string a) 
-                         (expr->string d)) 
-               (symbol->string a)))
+         (cond
+           [(and t d)
+            (format "~a : ~a = ~a" 
+                    (symbol->string a)
+                    (expr->string t)
+                    (expr->string d))]
+           [t 
+            (format "~a : ~a"
+                    (symbol->string a)
+                    (expr->string t))]
+           
+           [d
+            (format "~a = ~a"
+                    (symbol->string a)
+                    (expr->string d))]
+           
+           [else
+            (symbol->string a)])))
          
-         (if t
-             (format "~a : ~a" 
-                     p
-                     (expr->string t))
-             p)))
-       
      (set! printed-args 
            (map render-arg
                 args
